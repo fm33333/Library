@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: library
+  profiles:
+    active: dev
+  devtools.restart.enabled: false
+  # 启动时循环引用问题
+  main:
+    allow-circular-references: true
+
+# mybatis配置
+mybatis:
+  mapperLocations: classpath*:mapper/*.xml,classpath*:mapper/*/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
+
+# 枚举按简单类型处理
+mapper:
+  enum-as-simple-type: true
+
+# pagehelper分页插件
+pagehelper:
+  supportMethodsArguments: true
+  reasonable: true
+  helperDialect: mysql
+  params: count=countSql
+
+# 日志配置
+logging:
+  file.path: /logs/${spring.application.name}
+  config: classpath:logback-spring.xml
+
