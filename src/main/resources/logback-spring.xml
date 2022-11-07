@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+    <!--保存路径-->
+    <springProperty scope="context" name="LOG_FILE" source="logging.file.path"/>
+
+    <!--日志输出格式-->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr([%L]){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <property name="FILE_LOG_PATTERN"
+              value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} [%L] %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!--单个文件最大值-->
+    <property name="LOG_FILE_MAX_SIZE" value="10MB"/>
+
+    <!--文件最大保存天数-->
+    <property name="LOG_FILE_MAX_HISTORY" value="30"/>
+
+    <!-- 控制台输出日志 -->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- 文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <file>${LOG_FILE}.log</file>
+
+        <!--按天生成文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}/%d{yyyyMM, aux}/%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!--启动优化-->
+    <logger name="org.springframework.jmx.export.annotation.AnnotationMBeanExporter" level="WARN"/>
+    <logger name="org.springframework.context.support.PostProcessorRegistrationDelegate" level="WARN"/>
+    <logger name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" level="WARN"/>
+    <logger name="org.springframework.boot.web.servlet.FilterRegistrationBean" level="WARN"/>
+    <logger name="org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping" level="WARN"/>
+    <logger name="org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter" level="WARN"/>
+    <logger name="tk.mybatis.mapper.autoconfigure.MapperCacheDisabler" level="WARN"/>
+    <logger name="org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping" level="WARN"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="DEBUG"/>
+    <logger name="org.springframework.integration.monitor.IntegrationMBeanExporter" level="WARN"/>
+    <logger name="com.lrscft.wechatlog" level="DEBUG"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

@@ -1,0 +1,46 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+}
+
+bootJar {
+    archiveName("library.jar")
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+    implementation 'jakarta.validation:jakarta.validation-api:2.0.2' // WebGlobalExceptionHandler => javax.validation.*
+    implementation 'commons-collections:commons-collections:3.2.2' // HttpUtils => org.apache.commons.
+    implementation 'org.apache.httpcomponents:httpclient:4.5.12' // HttpUtils => org.apache.http.
+    implementation 'org.hibernate.validator:hibernate-validator:6.0.18.Final' // hibernate校验
+    implementation 'org.apache.poi:poi:3.17'    // Workbook、CellStyle
+    implementation 'org.apache.poi:poi-ooxml:3.17'
+    implementation 'commons-io:commons-io:2.6'  // FilenameUtils
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
+    implementation 'tk.mybatis:mapper-spring-boot-starter:2.1.5' // mapper
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
